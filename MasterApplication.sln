@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileAgent_2", "FileAgent_2\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent", "Agent\Agent.csproj", "{5D9362EE-2E73-486B-B806-07DDE59038AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentTest", "AgentTest\AgentTest.csproj", "{172C8A07-1E8F-41BF-9526-C40694031210}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5D9362EE-2E73-486B-B806-07DDE59038AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D9362EE-2E73-486B-B806-07DDE59038AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9362EE-2E73-486B-B806-07DDE59038AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{172C8A07-1E8F-41BF-9526-C40694031210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{172C8A07-1E8F-41BF-9526-C40694031210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{172C8A07-1E8F-41BF-9526-C40694031210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{172C8A07-1E8F-41BF-9526-C40694031210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
