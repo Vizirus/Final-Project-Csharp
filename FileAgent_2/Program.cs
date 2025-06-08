@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO.Pipes;
 using System.Reflection.Metadata;
 using System.Text;
@@ -10,6 +11,8 @@ namespace FileAgent
 
         static async Task Main(string[] args)
         {
+            Process process = Process.GetCurrentProcess();
+            process.ProcessorAffinity = (IntPtr)(1 << 1);
             StringBuilder stringBuilder = new StringBuilder();
             List<string> searchedWordsListB = new List<string>();
             Dictionary<string, string> filePathsDictionaryB = new Dictionary<string, string>();

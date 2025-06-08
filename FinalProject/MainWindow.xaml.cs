@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Win32;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,13 +28,54 @@ namespace FinalProject
         private Dictionary<string, string> filePathsDictionaryB;
         public MainWindow()
         {
+            Process process = Process.GetCurrentProcess();
+            process.ProcessorAffinity = (IntPtr)(1 << 4);
             InitializeComponent();
             searchedWordsListA = new List<string>();
             filePathsDictionaryA = new Dictionary<string, string>();
             searchedWordsListB = new List<string>();
             filePathsDictionaryB = new Dictionary<string, string>();
         }
+        private async Task SaveFileAsync(string tag)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog.RestoreDirectory = true;
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+                string textToSave = string.Empty;
+                textToSave = (tag == "A") ? AgentAName.Text : AgentBName.Text;
+                using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+                {
+                    await writer.WriteAsync(textToSave);
+                }
 
+            }
+        }
+        private async Task openFileAsync(string tag)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                string textToOpen = string.Empty;
+                using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
+                {
+                    textToOpen = await reader.ReadToEndAsync();
+                }
+                if (tag == "A")
+                {
+                    AgentAName.Text = textToOpen;
+                }
+                else if (tag == "B")
+                {
+                    AgentBName.Text = textToOpen;
+                }
+            }
+        }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             addContextToPipes = new AddContextToPipes(this);
@@ -42,9 +85,9 @@ namespace FinalProject
         }
         internal void SetContext(string contextChar, List<string> swL, Dictionary<string, string> keyValuePairs)
         {
-            if(contextChar == "A")
+            if (contextChar == "A")
             {
-                
+
                 if (swL == null || keyValuePairs == null || swL.Count == 0 || keyValuePairs.Count == 0)
                 {
                     MessageBox.Show("Invalid context data provided.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -68,23 +111,23 @@ namespace FinalProject
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
-            StringBuilder sb = new StringBuilder(); 
+
+            StringBuilder sb = new StringBuilder();
             var button = sender as Button;
             var buttonTag = button?.Tag as string;
-            if(buttonTag == "A" && (searchedWordsListA.Count() == 0 || filePathsDictionaryA.Count() == 0))
+            if (buttonTag == "A" && (searchedWordsListA.Count() == 0 || filePathsDictionaryA.Count() == 0))
             {
                 MessageBox.Show("Contexts A are not set. Please set them before proceeding.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            else if(buttonTag == "B" &&(searchedWordsListB.Count() == 0 || filePathsDictionaryB.Count() == 0))
+            else if (buttonTag == "B" && (searchedWordsListB.Count() == 0 || filePathsDictionaryB.Count() == 0))
             {
                 MessageBox.Show("Contexts B are not set. Please set them before proceeding.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             else
             {
-                if(buttonTag == "A")
+                if (buttonTag == "A")
                 {
                     var proccess = Process.Start(new ProcessStartInfo
                     {
@@ -176,6 +219,23 @@ namespace FinalProject
                         });
                     });
             }
+        }
+        private async void SaveFile(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var tag = menuItem?.Tag as string;
+            await SaveFileAsync(tag);
+        }
+        private async void OpenFile(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var tag = menuItem?.Tag as string;
+            await openFileAsync(tag);
+        }
+        private async void SaveAll(object sender, RoutedEventArgs e)
+        {
+            await SaveFileAsync("A");
+            await SaveFileAsync("B");
         }
     }
 }

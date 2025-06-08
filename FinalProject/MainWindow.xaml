@@ -17,10 +17,11 @@
         </Grid.ColumnDefinitions>
         <Menu Name="Menu" Grid.Row="0" Grid.ColumnSpan="3" Height="25" FontSize="16">
             <MenuItem Header="File">
-                <MenuItem Header="Open file as..."/>
-                <MenuItem Header="Save file"/>
-                <MenuItem Header="Save file as..."/>
-                <MenuItem Header="Exit"/>
+                <MenuItem Header="Open for scanner A as..." Click="OpenFile" Tag="A"/>
+                <MenuItem Header="Open for scanner B as..." Click="OpenFile" Tag="B"/>
+                <MenuItem Header="Save Agent A..." Click="SaveFile" Tag="A"/>
+                <MenuItem Header="Save Agent B..." Click="SaveFile" Tag="B"/>
+                <MenuItem Header="Save both agent as..." Click="SaveAll"/>
             </MenuItem>
             <MenuItem Header="Change Agents Data" Click="MenuItem_Click"/>
         </Menu>
