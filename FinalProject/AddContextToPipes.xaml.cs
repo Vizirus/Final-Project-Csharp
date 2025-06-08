@@ -241,7 +241,7 @@ namespace FinalProject
                 if (searchedWordsListB.Contains(AgentBWordToSearch.Text))
                 {
                     searchedWordsListB.Remove(AgentBWordToSearch.Text);
-                    ResultBlock.Text = string.Join(", ", searchedWordsListB);
+                    ResultBlockB.Text = string.Join(", ", searchedWordsListB);
                 }
                 else
                 {
