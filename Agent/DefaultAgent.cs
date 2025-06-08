@@ -29,6 +29,17 @@
                 fileStream.Close();
             }
         }
+        public int ReturnCount(string searchedWord)
+        {
+            if (string.IsNullOrEmpty(searchedWord))
+            {
+                throw new ArgumentException("Searched word cannot be null or empty.");
+            }
+            else
+            {
+                return _fileToString.Count(x => x == searchedWord);
+            }
+        }
         public void CalculateWordFrequency(string searchedWord) //MUST be Tasked
         {
             if (string.IsNullOrEmpty(searchedWord))

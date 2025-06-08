@@ -27,7 +27,6 @@ namespace FinalProject
         public MainWindow()
         {
             InitializeComponent();
-            addContextToPipes = new AddContextToPipes(this);
             searchedWordsListA = new List<string>();
             filePathsDictionaryA = new Dictionary<string, string>();
             searchedWordsListB = new List<string>();
@@ -36,18 +35,17 @@ namespace FinalProject
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            addContextToPipes = new AddContextToPipes(this);
             addContextToPipes.Show();
+            var menu = sender as MenuItem;
+            menu.IsEnabled = false; // Disable the menu item after opening the window
         }
         internal void SetContext(string contextChar, List<string> swL, Dictionary<string, string> keyValuePairs)
         {
             if(contextChar == "A")
             {
-                if (searchedWordsListA.Count > 0 || filePathsDictionaryA.Count > 0)
-                {
-                    MessageBox.Show("Context A is already set. Please clear it before setting a new context.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-                else if (swL == null || keyValuePairs == null || swL.Count == 0 || keyValuePairs.Count == 0)
+                
+                if (swL == null || keyValuePairs == null || swL.Count == 0 || keyValuePairs.Count == 0)
                 {
                     MessageBox.Show("Invalid context data provided.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -58,12 +56,7 @@ namespace FinalProject
             }
             else if (contextChar == "B")
             {
-                if (searchedWordsListB.Count > 0 || filePathsDictionaryB.Count > 0)
-                {
-                    MessageBox.Show("Context B is already set. Please clear it before setting a new context.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-                else if (swL == null || keyValuePairs == null || swL.Count == 0 || keyValuePairs.Count == 0)
+                if (swL == null || keyValuePairs == null || swL.Count == 0 || keyValuePairs.Count == 0)
                 {
                     MessageBox.Show("Invalid context data provided.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -101,7 +94,7 @@ namespace FinalProject
                 {
 
                     sb.AppendLine("Agent A have been launched.");
-                    using var pipeClient = new NamedPipeServerStream("FileAgentPipe", PipeDirection.InOut);
+                    using var pipeClient = new NamedPipeServerStream((buttonTag == "A") ? "FileAgentPipe" : "FileAgentPipeB", PipeDirection.InOut);
                     sb.AppendLine("Waiting for connection...");
                     pipeClient.WaitForConnection();
                     sb.AppendLine("Connection established.");
@@ -169,7 +162,6 @@ namespace FinalProject
                         }
                     });
                 });
-                proccess?.Close();
             }
         }
     }

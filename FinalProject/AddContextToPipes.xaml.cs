@@ -150,5 +150,72 @@ namespace FinalProject
             else if (buttonTag == "B")
                 mainWindow.SetContext(buttonTag, searchedWordsListB, fileViewModelsB.ToDictionary(f => f.FileName, f => f.FilePath));
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var buttonTag = button?.Tag as string;
+            if(buttonTag == "A")
+            {
+                var SelectedItem = AgentAFileList.SelectedItem as FileViewModel;
+                if (SelectedItem != null)
+                {
+                    fileViewModels.Remove(SelectedItem);
+                }
+                else
+                {
+                    MessageBox.Show("Please select a file to remove.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else if (buttonTag == "B")
+            {
+                var SelectedItem = AgentBFileList.SelectedItem as FileViewModel;
+                if (SelectedItem != null)
+                {
+                    fileViewModelsB.Remove(SelectedItem);
+                }
+                else
+                {
+                    MessageBox.Show("Please select a file to remove.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var buttonTag = button?.Tag as string;
+            if (buttonTag == "A")
+            {
+                if (searchedWordsList.Contains(AgentAWordToSearch.Text))
+                {
+                    searchedWordsList.Remove(AgentAWordToSearch.Text);
+                    ResultBlock.Text = string.Join(", ", searchedWordsList);
+                }
+                else
+                {
+                    MessageBox.Show("Please select a word to remove.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else if (buttonTag == "B")
+            {
+                if (searchedWordsListB.Contains(AgentBWordToSearch.Text))
+                {
+                    searchedWordsListB.Remove(AgentBWordToSearch.Text);
+                    ResultBlock.Text = string.Join(", ", searchedWordsListB);
+                }
+                else
+                {
+                    MessageBox.Show("Please select a word to remove.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var menuItem = mainWindow.Menu.Items[1] as MenuItem;
+            menuItem.IsEnabled = true; // Re-enable the menu item when the window is closed
+        }
     }
 }

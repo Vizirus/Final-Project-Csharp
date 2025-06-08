@@ -15,7 +15,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0" Grid.ColumnSpan="3" Height="25" FontSize="16">
+        <Menu Name="Menu" Grid.Row="0" Grid.ColumnSpan="3" Height="25" FontSize="16">
             <MenuItem Header="File">
                 <MenuItem Header="Open file as..."/>
                 <MenuItem Header="Save file"/>

@@ -56,9 +56,10 @@ namespace FileAgent
                             foreach (var word in searchedWordsListA)
                             {
                                 agent.CalculateWordFrequency(word);
+                                int countInFile = agent.ReturnCount(word);
                                 var content = agent.GetContentByToken(word);
                                 writer.WriteLine("ok");
-                                writer.WriteLine($"File: {kvp.Key}, Word: {content.Item1}, Count: {content.Item2}\n");
+                                writer.WriteLine($"File: {kvp.Key}, Word: {content.Item1}, Count: {countInFile}. Sum count for the word: {content.Item2}\n");
                             }
                             Console.WriteLine("Data has been sent to the master application successfully!");
                         }
