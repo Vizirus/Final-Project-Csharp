@@ -5,12 +5,16 @@
         private string _filePath { get; set; }
         private string[] _fileToString { get; set; }    
         private Dictionary<string, int> _fileContent { get; set; }
+        public DefaultAgent()
+        {
+            this._filePath = string.Empty;
+            this._fileContent = new Dictionary<string, int>();
+        }
         public DefaultAgent(string filePath)
         {
             this._filePath = filePath;
             this._fileContent = new Dictionary<string, int>();
         }
-
         public void ChangeFilePath(string newPath)
         {
             this._filePath = newPath;

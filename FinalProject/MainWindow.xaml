@@ -22,7 +22,7 @@
                 <MenuItem Header="Save file as..."/>
                 <MenuItem Header="Exit"/>
             </MenuItem>
-            <MenuItem Header="Change Agents Data"/>
+            <MenuItem Header="Change Agents Data" Click="MenuItem_Click"/>
         </Menu>
         <!-- Other content can go in Grid.Row="1" -->
         <!--The Agent A code-->
@@ -40,10 +40,10 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Agent A" FontSize="20" Margin="10" HorizontalAlignment="Left" Grid.Column="0"/>
-                        <Button Content="Start parsing" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="1" Height="30"/>
+                        <Button Content="Start parsing" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="1" Height="30" Click="Button_Click" Tag="A"/>
                     </Grid>
                 </DockPanel>
-                <TextBox Name="AgentAName" VerticalAlignment="Stretch" Grid.Row="1" HorizontalAlignment="Stretch" Margin="3"/>
+                <TextBox Name="AgentAName" VerticalAlignment="Stretch" Grid.Row="1" HorizontalAlignment="Stretch" Margin="3" FontSize="14"/>
             </Grid>
         </DockPanel>
         <!--The Agent B code-->
@@ -64,7 +64,7 @@
                         <Button Content="Start parsing" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="1" Height="30"/>
                     </Grid>
                 </DockPanel>
-                <TextBox VerticalAlignment="Stretch" Grid.Row="1" HorizontalAlignment="Stretch" Margin="3"/>
+                <TextBox Name="AgentBName" VerticalAlignment="Stretch" Grid.Row="1" HorizontalAlignment="Stretch" Margin="3"/>
             </Grid>
         </DockPanel>
     </Grid>
