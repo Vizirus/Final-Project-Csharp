@@ -84,84 +84,97 @@ namespace FinalProject
             }
             else
             {
-                var proccess = Process.Start(new ProcessStartInfo
+                if(buttonTag == "A")
                 {
-                    FileName = "D:\\Artem\\Файли\\Унік\\2 semest\\OOP\\C#\\Final project\\MasterApplication\\FileAgent\\bin\\Debug\\net9.0\\FileAgent.exe",
-                    CreateNoWindow = false,
-                    UseShellExecute = true
-                });
+                    var proccess = Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "D:\\Artem\\Файли\\Унік\\2 semest\\OOP\\C#\\Final project\\MasterApplication\\FileAgent\\bin\\Debug\\net9.0\\FileAgent.exe",
+                        CreateNoWindow = false,
+                        UseShellExecute = true
+                    });
+                }
+                else
+                {
+                    var proccess = Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "D:\\Artem\\Файли\\Унік\\2 semest\\OOP\\C#\\Final project\\MasterApplication\\FileAgent_2\\bin\\Debug\\net9.0\\FileAgent_2.exe",
+                        CreateNoWindow = false,
+                        UseShellExecute = true
+                    });
+                }
+
                 Task.Run(() =>
-                {
-
-                    sb.AppendLine("Agent A have been launched.");
-                    using var pipeClient = new NamedPipeServerStream((buttonTag == "A") ? "FileAgentPipe" : "FileAgentPipeB", PipeDirection.InOut);
-                    sb.AppendLine("Waiting for connection...");
-                    pipeClient.WaitForConnection();
-                    sb.AppendLine("Connection established.");
-
-                    using var reader = new StreamReader(pipeClient);
-                    using var writer = new StreamWriter(pipeClient) { AutoFlush = true };
-
-
-                    if (buttonTag == "A")
                     {
-                        writer.WriteLine("w");
-                        foreach (var i in searchedWordsListA)
-                        {
-                            writer.WriteLine(i);
-                        }
-                        writer.WriteLine("dc");
-                        foreach (var kvp in filePathsDictionaryA)
-                        {
-                            writer.WriteLine($"{kvp.Key};{kvp.Value}");
-                        }
-                        writer.WriteLine("end");
-                    }
-                    else if (buttonTag == "B")
-                    {
-                        writer.WriteLine("w");
-                        foreach (var i in searchedWordsListB)
-                        {
-                            writer.WriteLine(i);
-                        }
-                        writer.WriteLine("dc");
-                        foreach (var kvp in filePathsDictionaryB)
-                        {
-                            writer.WriteLine($"{kvp.Key};{kvp.Value}");
-                        }
-                        writer.WriteLine("end");
-                    }
-                    string? readResult = reader?.ReadLine();
-                    while (readResult != "exit")
-                    {
-                        if (readResult == "ok")
-                        {
-                            readResult = reader.ReadLine();
-                            sb.AppendLine(readResult);
-                        }
-                        else if (readResult == "er")
-                        {
-                            sb.AppendLine("An error occurred while processing the request.");
-                        }
-                        readResult = reader?.ReadLine();
-                    }
-                    writer.Flush();
-                    writer.Close();
-                    reader.Close();
-                    sb.AppendLine("Processing completed.");
-                    pipeClient.Close();
-                    Dispatcher.Invoke(() =>
-                    {
+                        var pipeName = (buttonTag == "A") ? "FileAgentPipe" : "FileAgentPipeB";
+                        sb.AppendLine("Agent have been launched.");
+                        using var pipeClient = new NamedPipeServerStream(pipeName, PipeDirection.InOut);
+                        sb.AppendLine("Waiting for connection...");
+                        pipeClient.WaitForConnection();
+                        sb.AppendLine("Connection established.");
+
+                        using var reader = new StreamReader(pipeClient);
+                        using var writer = new StreamWriter(pipeClient) { AutoFlush = true };
+
+
                         if (buttonTag == "A")
                         {
-                            AgentAName.Text = sb.ToString();
+                            writer.WriteLine("w");
+                            foreach (var i in searchedWordsListA)
+                            {
+                                writer.WriteLine(i);
+                            }
+                            writer.WriteLine("dc");
+                            foreach (var kvp in filePathsDictionaryA)
+                            {
+                                writer.WriteLine($"{kvp.Key};{kvp.Value}");
+                            }
+                            writer.WriteLine("end");
                         }
                         else if (buttonTag == "B")
                         {
-                            AgentBName.Text = sb.ToString();
+                            writer.WriteLine("w");
+                            foreach (var i in searchedWordsListB)
+                            {
+                                writer.WriteLine(i);
+                            }
+                            writer.WriteLine("dc");
+                            foreach (var kvp in filePathsDictionaryB)
+                            {
+                                writer.WriteLine($"{kvp.Key};{kvp.Value}");
+                            }
+                            writer.WriteLine("end");
                         }
+                        string? readResult = reader?.ReadLine();
+                        while (readResult != "exit")
+                        {
+                            if (readResult == "ok")
+                            {
+                                readResult = reader.ReadLine();
+                                sb.AppendLine(readResult);
+                            }
+                            else if (readResult == "er")
+                            {
+                                sb.AppendLine("An error occurred while processing the request.");
+                            }
+                            readResult = reader?.ReadLine();
+                        }
+                        writer.Flush();
+                        writer.Close();
+                        reader.Close();
+                        sb.AppendLine("Processing completed.");
+                        pipeClient.Close();
+                        Dispatcher.Invoke(() =>
+                        {
+                            if (buttonTag == "A")
+                            {
+                                AgentAName.Text = sb.ToString();
+                            }
+                            else if (buttonTag == "B")
+                            {
+                                AgentBName.Text = sb.ToString();
+                            }
+                        });
                     });
-                });
             }
         }
     }

@@ -57,9 +57,24 @@ namespace FinalProject
                     newItem.FileName = System.IO.Path.GetFileName(file);
                     newItem.FilePath = file;
                     if(param == "A")
+                    {
+                        if(fileViewModels.Any(f => f.FileName == newItem.FileName))
+                        {
+                            MessageBox.Show($"File '{newItem.FileName}' already exists in the list.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            continue; // Skip adding this file if it already exists
+                        }
                         fileViewModels.Add(newItem);
+                    }
+                        
                     else if (param == "B")
+                    {
+                        if (fileViewModelsB.Any(f => f.FileName == newItem.FileName))
+                        {
+                            MessageBox.Show($"File '{newItem.FileName}' already exists in the list.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            continue; // Skip adding this file if it already exists
+                        }
                         fileViewModelsB.Add(newItem);
+                    }
                     newItem = new FileViewModel(); // Reset for the next item
                 }
             }
@@ -70,27 +85,35 @@ namespace FinalProject
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(string.IsNullOrWhiteSpace(AgentAWordToSearch.Text))
+           
+            var button = sender as Button;
+            var buttonTag = button?.Tag as string;
+            if(buttonTag == "A")
             {
-                MessageBox.Show("Please enter a file name to search.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            else
-            {
-                var button = sender as Button;
-                var buttonTag = button?.Tag as string;
-                if(buttonTag == "A")
+                if (string.IsNullOrWhiteSpace(AgentAWordToSearch.Text))
+                {
+                    MessageBox.Show("Please enter a file name to search.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if(!searchedWordsList.Contains(AgentAWordToSearch.Text))
                 {
                     searchedWordsList.Add(AgentAWordToSearch.Text);
                     ResultBlock.Text = string.Join(", ", searchedWordsList);
                 }
-                else
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(AgentBWordToSearch.Text))
+                {
+                    MessageBox.Show("Please enter a file name to search.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if (!searchedWordsListB.Contains(AgentBWordToSearch.Text))
                 {
                     searchedWordsListB.Add(AgentBWordToSearch.Text);
                     ResultBlockB.Text = string.Join(", ", searchedWordsListB);
-                }
+                }        
             }
-
         }
 
 
@@ -130,9 +153,24 @@ namespace FinalProject
                     var button = sender as Button;
                     var buttonTag = button?.Tag as string;
                     if (buttonTag == "A")
+                    {
+                        if (fileViewModels.Any(f => f.FileName == newItem.FileName))
+                        {
+                            MessageBox.Show($"File '{newItem.FileName}' already exists in the list.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            continue; // Skip adding this file if it already exists
+                        }
                         fileViewModels.Add(newItem);
+                    }
+
                     else if (buttonTag == "B")
+                    {
+                        if (fileViewModelsB.Any(f => f.FileName == newItem.FileName))
+                        {
+                            MessageBox.Show($"File '{newItem.FileName}' already exists in the list.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            continue; // Skip adding this file if it already exists
+                        }
                         fileViewModelsB.Add(newItem);
+                    }
                 }
             }
             else
